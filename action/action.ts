@@ -9,7 +9,7 @@ import { title } from "process";
 
 export  async function createTodo({title,completed}:{title:string,completed:boolean}) {
     
-  // const title=formData.get("title")?.toString();
+ 
   
     const newTask=await prisma.todo.create({
         data:{
@@ -19,11 +19,10 @@ export  async function createTodo({title,completed}:{title:string,completed:bool
     })
     revalidatePath("/");
     return newTask;
-    //redirect("/");
     
 }
 export  async function deleteTodo(id:number) {
-  //  const id=formData.get("id");
+ 
    const response=await prisma.todo.delete({
         where:{
             id
@@ -31,7 +30,7 @@ export  async function deleteTodo(id:number) {
     })
     revalidatePath("/");
      return response;
-    // redirect("/");
+   
 }
 export  async function UpdateTodo(id: number, { title }: { title: string; }) {
     

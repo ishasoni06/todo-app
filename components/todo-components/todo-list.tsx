@@ -7,9 +7,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
 import { prisma } from "@/lib/db";
-import { checkTodo, deleteTodo, UpdateTodo } from "@/action/action";
-
-//import { useRouter } from "next/navigation";
+import { checkTodo, deleteTodo } from "@/action/action";
 
 import { Form } from "../ui/form";
 
@@ -24,24 +22,13 @@ interface TodoListProps {
   setUpdateTodo: (todo: Todos) => void;
 }
 export default function TodoList({ todos, setUpdateTodo }: TodoListProps) {
-  // const router = useRouter();
-  //const todos = await prisma.todo.findMany();
-
   const handleCheckedBoxChange = async (id: number) => {
     const response = await checkTodo(id);
-    //router.refresh();
   };
   const handleDelete = async (id: number) => {
     const response = await deleteTodo(id);
-    //router.refresh();
   };
-  /* const handleSetId = (id: number, title: string) => {
-    setUpdate(title);
-  };*/
-  /*
-  const handleGetUpdate = async (id: number, title: string) => {
-    await UpdateId(id, title);
-  };*/
+
   return (
     <>
       <div className="flex flex-col gap-2 max-w-lg w-full">
