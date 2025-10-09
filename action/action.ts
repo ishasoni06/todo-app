@@ -8,9 +8,6 @@ import { title } from "process";
 
 
 export  async function createTodo({title,completed}:{title:string,completed:boolean}) {
-    
- 
-  
     const newTask=await prisma.todo.create({
         data:{
             title,
