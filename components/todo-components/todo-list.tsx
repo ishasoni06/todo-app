@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 import { prisma } from "@/lib/db";
 import { checkTodo, deleteTodo, UpdateTodo } from "@/action/action";
 
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 import { Form } from "../ui/form";
 
@@ -21,19 +21,23 @@ interface Todos {
 
 interface TodoListProps {
   todos: Todos[];
+  setUpdateTodo: (todo: Todos) => void;
 }
-export default function TodoList({ todos }: TodoListProps) {
-  const router = useRouter();
+export default function TodoList({ todos, setUpdateTodo }: TodoListProps) {
+  // const router = useRouter();
   //const todos = await prisma.todo.findMany();
 
   const handleCheckedBoxChange = async (id: number) => {
-    await checkTodo(id);
-    router.refresh();
+    const response = await checkTodo(id);
+    //router.refresh();
   };
   const handleDelete = async (id: number) => {
-    await deleteTodo(id);
-    router.refresh();
+    const response = await deleteTodo(id);
+    //router.refresh();
   };
+  /* const handleSetId = (id: number, title: string) => {
+    setUpdate(title);
+  };*/
   /*
   const handleGetUpdate = async (id: number, title: string) => {
     await UpdateId(id, title);
@@ -61,7 +65,7 @@ export default function TodoList({ todos }: TodoListProps) {
               </h1>
             </div>
             <div className="flex items-center gap-2">
-              <Edit2Icon />
+              <Edit2Icon onClick={() => setUpdateTodo(todo)} />
 
               <TrashIcon onClick={() => handleDelete(todo.id)} />
             </div>

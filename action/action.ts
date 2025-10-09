@@ -2,51 +2,53 @@
 
 import {prisma, PrismaClient} from "@/lib/db";
 import { revalidatePath } from "next/cache";
+
 import { redirect } from "next/navigation";
+import { title } from "process";
 
 
-export  async function createTodo(formData:FormData) {
+export  async function createTodo({title,completed}:{title:string,completed:boolean}) {
     
-   const title=formData.get("title")?.toString();
-   if (!title) {
-    throw new Error("Content is required");
-  }
+  // const title=formData.get("title")?.toString();
+  
     const newTask=await prisma.todo.create({
         data:{
             title,
-            completed:false,
+            completed,
         },
     })
-    
-    redirect("/");
-   
+    revalidatePath("/");
+    return newTask;
+    //redirect("/");
     
 }
 export  async function deleteTodo(id:number) {
   //  const id=formData.get("id");
-    await prisma.todo.delete({
+   const response=await prisma.todo.delete({
         where:{
             id
         },
     })
+    revalidatePath("/");
+     return response;
     // redirect("/");
 }
-export  async function UpdateTodo(formData:FormData) {
-    const id=formData.get("id");
-    const title=formData.get("title")?.toString();
-    await prisma.todo.update({
+export  async function UpdateTodo(id: number, { title }: { title: string; }) {
+    
+    const response=await prisma.todo.update({
         where:{
-            id:Number(id)
+            id
         },
         data:{
             title,
         }
     })
-     redirect("/");
+    revalidatePath("/");
+    return response;
 }
 export  async function checkTodo(id:number) {
     const todo=await prisma.todo.findUnique({where:{id}})
-    await prisma.todo.update({
+    const response=await prisma.todo.update({
         where:{
             id
         },
@@ -54,6 +56,8 @@ export  async function checkTodo(id:number) {
            completed:!todo?.completed
         }
     })
-    
+    revalidatePath("/");
+    return response;
+  
 }
 
